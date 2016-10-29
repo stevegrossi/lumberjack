@@ -1,10 +1,20 @@
 defmodule Lumberjack do
-  alias Experimental.GenStage
+  use Application
 
-  def go do
-    {:ok, reader} = Lumberjack.Reader.start_link(0)
-    {:ok, printer} = Lumberjack.Printer.start_link()
+  # See http://elixir-lang.org/docs/stable/elixir/Application.html
+  # for more information on OTP Applications
+  def start(_type, _args) do
+    import Supervisor.Spec, warn: false
 
-    GenStage.sync_subscribe(printer, to: reader)
+    # Define workers and child supervisors to be supervised
+    children = [
+      worker(Lumberjack.Reader, [0]),
+      worker(Lumberjack.Printer, [])
+    ]
+
+    # See http://elixir-lang.org/docs/stable/elixir/Supervisor.html
+    # for other strategies and supported options
+    opts = [strategy: :one_for_one, name: Lumberjack.Supervisor]
+    Supervisor.start_link(children, opts)
   end
 end

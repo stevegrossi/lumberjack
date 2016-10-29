@@ -4,7 +4,7 @@ defmodule Lumberjack.Reader do
   use GenStage
 
   def start_link(state) do
-    GenStage.start_link(__MODULE__, state)
+    GenStage.start_link(__MODULE__, state, name: __MODULE__)
   end
 
   # Callbacks
