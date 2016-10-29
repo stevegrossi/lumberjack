@@ -9,7 +9,10 @@ defmodule Lumberjack do
     # Define workers and child supervisors to be supervised
     children = [
       worker(Lumberjack.Reader, [0]),
-      worker(Lumberjack.Printer, [])
+      worker(Lumberjack.Printer, [], id: 1),
+      worker(Lumberjack.Printer, [], id: 2),
+      worker(Lumberjack.Printer, [], id: 3),
+      worker(Lumberjack.Printer, [], id: 4)
     ]
 
     # See http://elixir-lang.org/docs/stable/elixir/Supervisor.html
