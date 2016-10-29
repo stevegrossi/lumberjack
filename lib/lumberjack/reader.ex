@@ -10,7 +10,7 @@ defmodule Lumberjack.Reader do
   # Callbacks
 
   def init(state) do
-    {:producer, state, dispatcher: GenStage.BroadcastDispatcher}
+    {:producer, state}
   end
 
   def handle_demand(demand, state) do
