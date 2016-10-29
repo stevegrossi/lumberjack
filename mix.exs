@@ -14,7 +14,8 @@ defmodule Lumberjack.Mixfile do
   #
   # Type "mix help compile.app" for more information
   def application do
-    [applications: [:logger, :gen_stage]]
+    [applications: [:logger, :gen_stage],
+     mod: {Lumberjack, []}]
   end
 
   # Dependencies can be Hex packages:
@@ -27,6 +28,6 @@ defmodule Lumberjack.Mixfile do
   #
   # Type "mix help deps" for more examples and options
   defp deps do
-    []
+    [{:gen_stage, "~> 0.7"}]
   end
 end
