@@ -9,6 +9,7 @@ defmodule Lumberjack do
     # Define workers and child supervisors to be supervised
     children = [
       worker(Lumberjack.Reader, [0]),
+      worker(Lumberjack.Multiplier, [2])
     ]
     consumers =
       for id <- 1..System.schedulers_online do

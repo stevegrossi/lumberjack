@@ -11,7 +11,7 @@ defmodule Lumberjack.Printer do
   # Callbacks
 
   def init(counter) do
-    {:consumer, counter, subscribe_to: [Lumberjack.Reader]}
+    {:consumer, counter, subscribe_to: [Lumberjack.Multiplier]}
   end
 
   def handle_events(events, _from, state) do
