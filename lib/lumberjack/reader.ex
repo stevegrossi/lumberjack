@@ -3,21 +3,24 @@ defmodule Lumberjack.Reader do
   alias Experimental.GenStage
   use GenStage
 
-  def start_link(state) do
+  def start_link(log_path) do
+    state = {0, log_path}
     GenStage.start_link(__MODULE__, state, name: __MODULE__)
   end
 
   # Callbacks
 
-  def init(state) do
-    {:producer, state}
+  def init({counter, log_path}) do
+    log = File.stream!(log_path)
+    {:producer, {counter, log}}
   end
 
-  def handle_demand(demand, state) do
-    # 0..4 => [0, 1, 2, 3, 4]
-    # 5..9 => [5, 6, 7, 8, 9] => 5
-    events = Enum.to_list(state..state+demand-1)
-    new_state = state + demand
-    {:noreply, events, new_state}
+  def handle_demand(demand, {counter, log}) do
+    lines =
+      log
+      |> Stream.drop(counter)
+      |> Enum.take(demand)
+
+    {:noreply, lines, {counter + demand, log}}
   end
 end

@@ -8,17 +8,14 @@ defmodule Lumberjack do
 
     # Define workers and child supervisors to be supervised
     children = [
-      worker(Lumberjack.Reader, [0]),
-      worker(Lumberjack.Multiplier, [2])
+      worker(Lumberjack.Reader, ["data/log.txt"]),
+      worker(Lumberjack.Filter, []),
+      worker(Lumberjack.Aggregator, [])
     ]
-    consumers =
-      for id <- 1..System.schedulers_online do
-        worker(Lumberjack.Printer, [], id: id)
-      end
 
     # See http://elixir-lang.org/docs/stable/elixir/Supervisor.html
     # for other strategies and supported options
     opts = [strategy: :one_for_one, name: Lumberjack.Supervisor]
-    Supervisor.start_link(children ++ consumers, opts)
+    Supervisor.start_link(children, opts)
   end
 end
