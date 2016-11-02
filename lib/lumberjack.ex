@@ -1,0 +1,2 @@
+defmodule Lumberjack do
+end
